@@ -1,68 +1,76 @@
-#include <stdio.h>
+#include <stdio.h> 
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#define MAX_INPUT_SIZE 1024
 
-#define MAX_INPUT_SIZE 100
-
-int main()
+void displayPrompt()
+{
+       	printf("#simple_shell$ ");
+}
+int main(int arc, char *argv[])
 {
 	int status;
+	pid_t pid;
+	char *args[64];
+	int argc;
+	char *str, *arv;
+
+	argc = 0;
+	
 	char input[MAX_INPUT_SIZE];
-	size_t in_len;
+
+	/*
+	if (arc > 0)
+	printf("-----%s\n", argv[0]);
+	*/
+	arv = argv[0];
 
 	while (1)
 	{
-		printf("simple_shell> ");
+		displayPrompt();
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
 			printf("\n Exiting simple_shell...\n");
 			break;
 		}
-		in_len = strlen(input);
+		
+		input[strcspn(input, "\n")] = '\0';
 
-		if (in_len > 0 && input[in_len - 1] == '\n')
+		pid = fork();
+
+		if (pid == -1)
 		{
-			input[in_len - 1] = '\0';
+			perror("fork");
+			exit(EXIT_FAILURE);
 		}
-		if (strlen(input) > 0)
+		else
 		{
-			pid_t child_pid = fork();
-
-			if (child_pid == -1)
+			if (pid == 0)
 			{
-				perror("fork");
+				str = strtok(input, " ");
+				while (str != NULL)
+				{
+					args[argc++] = str;
+					str = strtok(NULL, " ");
+				}
+				args[argc] = NULL;
+
+				if (execvp(args[0], args) == -1)
+				{
+					perror(arv);
+					exit(EXIT_FAILURE);
+				}
 			}
 			else
 			{
-				if (child_pid == 0)
-				{
-					execlp(input, input, (char *)NULL);
+				/* Parent Process */
+				waitpid(pid, &status, 0);
 
-					perror("exec");
-					exit(EXIT_FAILURE);
-				}
-				else
-				{
-					waitpid(child_pid, &status, 0);
-					
-					/*if (WIFEXITED(status))
-					{
-						printf("Child process exited with status %d\n", WEXITSTATUS(status));
-					}
-					else
-						if (WIFSIGNALED(status))
-						{
-							printf("Child process terminated by signal %d\n", WTERMSIG(status));
-						}*/
-				}
 			}
-
-
 		}
-
 	}
 
 	return (0);
