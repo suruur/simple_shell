@@ -58,7 +58,7 @@ int main(int arc, char *argv[])
 				}
 				args[argc] = NULL;
 
-				if (execvp(args[0], args) == -1)
+				if (execve(args[0], args, NULL) == -1)
 				{
 					perror(arv);
 					exit(EXIT_FAILURE);
