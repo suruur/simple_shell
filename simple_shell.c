@@ -36,6 +36,7 @@ int main()
 				perror("fork");
 			}
 			else
+			{
 				if (child_pid == 0)
 				{
 					execlp(input, input, (char *)NULL);
@@ -47,7 +48,7 @@ int main()
 				{
 					waitpid(child_pid, &status, 0);
 					
-					if (WIFEXITED(status))
+					/*if (WIFEXITED(status))
 					{
 						printf("Child process exited with status %d\n", WEXITSTATUS(status));
 					}
@@ -55,8 +56,9 @@ int main()
 						if (WIFSIGNALED(status))
 						{
 							printf("Child process terminated by signal %d\n", WTERMSIG(status));
-						}
+						}*/
 				}
+			}
 
 
 		}
