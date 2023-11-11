@@ -7,7 +7,7 @@
 
 #define MAX_INPUT_SIZE 100
 
-int main()
+int main(int argc, char *argv[])
 {
 	int status;
 	char input[MAX_INPUT_SIZE];
@@ -15,7 +15,7 @@ int main()
 
 	while (1)
 	{
-		printf("simple_shell> ");
+		printf("#simple_shell$ ");
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
 			printf("\n Exiting simple_shell...\n");
@@ -39,24 +39,17 @@ int main()
 			{
 				if (child_pid == 0)
 				{
-					execlp(input, input, (char *)NULL);
+					char *args[] = {input, NULL};
 
-					perror("exec");
+					execve(input, args, NULL);
+
+					perror(argv[0]);
 					exit(EXIT_FAILURE);
 				}
 				else
 				{
 					waitpid(child_pid, &status, 0);
 					
-					/*if (WIFEXITED(status))
-					{
-						printf("Child process exited with status %d\n", WEXITSTATUS(status));
-					}
-					else
-						if (WIFSIGNALED(status))
-						{
-							printf("Child process terminated by signal %d\n", WTERMSIG(status));
-						}*/
 				}
 			}
 
