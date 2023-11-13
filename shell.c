@@ -1,14 +1,17 @@
-#include <stdio.h> 
+#include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
 #define MAX_INPUT_SIZE 1024
+
+extern char **environ;
 
 void displayPrompt()
 {
-       	printf("#simple_shell$ ");
+       	printf("($) ");
 }
 int main(int arc, char *argv[])
 {
@@ -17,29 +20,34 @@ int main(int arc, char *argv[])
 	char *args[64];
 	int argc;
 	char *str, *arv;
+	char input[1024];
+
 
 	argc = 0;
-	
-	char input[MAX_INPUT_SIZE];
 
-	/*
 	if (arc > 0)
-	printf("-----%s\n", argv[0]);
-	*/
-	arv = argv[0];
+		arv = argv[0];
 
 	while (1)
 	{
 		displayPrompt();
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
-			printf("\n Exiting simple_shell...\n");
+			printf("\n"); 
 			break;
 		}
 		
 		input[strcspn(input, "\n")] = '\0';
 
-		pid = fork();
+		if (strcmp(input, "exit") == 0)
+		{
+			printf("Exiting...\n");
+			break;
+		}
+
+		if (strlen(input) > 0)
+		{
+			pid = fork();
 
 		if (pid == -1)
 		{
@@ -58,18 +66,10 @@ int main(int arc, char *argv[])
 				}
 				args[argc] = NULL;
 
-				if (strcmp(input, "exit") == 0)
+				if (execve(args[0], args, environ) == -1)
 				{
-					printf("exit -------\n");
-					exit(0);
-				}
-				else
-				{
-					if (execve(args[0], args, NULL) == -1)
-					{
-						perror(arv);
-						exit(EXIT_FAILURE);
-					}
+					perror(arv);
+					exit(EXIT_FAILURE);
 				}
 			}
 			else
@@ -78,6 +78,7 @@ int main(int arc, char *argv[])
 				waitpid(pid, &status, 0);
 
 			}
+		}
 		}
 	}
 
