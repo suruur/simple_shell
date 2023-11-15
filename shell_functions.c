@@ -52,7 +52,7 @@ void execute_command(char *args[], char *fn)
 
 			do {
 				waitpid(pid, &status, WUNTRACED);
-			}while(!WIFEXITED(status) && !WIFSIGNALED(status));
+			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 		}
 	}
 }
