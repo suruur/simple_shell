@@ -98,14 +98,7 @@ void parse_input(char *input, char *fn)
 		}
 		else
 		{
-			if (strcmp(args[0], "env") == 0)
-			{
-				print_env();
-			}
-			else
-			{
-				execute_command(args, fn);
-			}
+			execute_command(args, fn);
 		}
 	}
 }
