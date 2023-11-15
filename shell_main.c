@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include "shell_x.h"
+#include "main.h"
 
 /**
  * main - Entry point
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 				printf("\n");
 				break;
 			}
-			input[strcspn(input, "\n")] = '\0';
+
 			parse_input(input, fn);
 		}
 	}
