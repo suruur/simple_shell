@@ -39,7 +39,19 @@ void execute_command(char *args[], char *fn)
 		}
 	}
 }
+/**
+ * print_env - print env var
+ * Return: void
+ */
+void print_env(void)
+{
+	int i;
 
+	for (i = 0; environ[i] != NULL; i++)
+	{
+		printf("%s\n", environ[i]);
+	}
+}
 /**
  * parse_input - handle input
  * @input: command
@@ -65,6 +77,21 @@ void parse_input(char *input, char *fn)
 
 	if (i > 0)
 	{
-		execute_command(args, fn);
+		if (strcmp(args[0], "exit") == 0)
+		{
+			/* printf("Exiting..\n"); */
+			exit(0);
+		}
+		else
+		{
+			if (strcmp(args[0], "env") == 0)
+			{
+				print_env();
+			}
+			else
+			{
+				execute_command(args, fn);
+			}
+		}
 	}
 }

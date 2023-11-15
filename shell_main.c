@@ -30,8 +30,6 @@ int main(int argc, char *argv[])
 				break;
 			}
 			input[strcspn(input, "\n")] = '\0';
-			if (strcmp(input, "exit") == 0)
-				break;
 			parse_input(input, fn);
 		}
 	}
