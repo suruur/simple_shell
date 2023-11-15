@@ -70,6 +70,22 @@ void print_env(void)
 	}
 }
 /**
+ * exit_shell - exit shell
+ * @args: args
+ * Return: void
+ */
+void exit_shell(char **args)
+{
+	int st = 0;
+
+	if (args[1] != NULL)
+	{
+		st = atoi(args[1]);
+	}
+
+	exit(st);
+}
+/**
  * parse_input - handle input
  * @input: command
  * @fn: file name
@@ -97,7 +113,7 @@ void parse_input(char *input, char *fn)
 		if (strcmp(args[0], "exit") == 0)
 		{
 			/* printf("Exiting..\n"); */
-			exit(EXIT_SUCCESS);
+			exit_shell(args);
 		}
 		else
 		{
