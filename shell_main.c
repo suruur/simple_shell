@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include "main.h"
+#include "shell.h"
 
 /**
  * main - Entry point
