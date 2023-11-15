@@ -65,13 +65,6 @@ void parse_input(char *input, char *fn)
 
 	if (i > 0)
 	{
-		if (strcmp(args[0], "exit") == 0)
-		{
-			exit(EXIT_SUCCESS);
-		}
-		else
-		{
-			execute_command(args, fn);
-		}
+		execute_command(args, fn);
 	}
 }
