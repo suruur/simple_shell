@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include "main.h"
+#include "shell.h"
 
 /**
  * execute_command - run command
