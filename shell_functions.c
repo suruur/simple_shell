@@ -18,6 +18,7 @@ void execute_command(char *args[], char *fn)
 	char *path_env, *path_c, *path_t;
 	char cmd_path[1024];
 	pid_t pid;
+	int status;
 
 	pid = fork();
 
@@ -49,7 +50,9 @@ void execute_command(char *args[], char *fn)
 		{
 			/* Parent Process */
 
-			waitpid(pid, NULL, 0);
+			do {
+				waitpid(pid, &status, WUNTRACED);
+			}while(!WIFEXITED(status) && !WIFSIGNALED(status));
 		}
 	}
 }
