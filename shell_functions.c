@@ -34,10 +34,10 @@ void execute_command(char *args[], char *fn)
 			if (access(cmd_path, X_OK) == 0)
 			{
 				execve(cmd_path, args, environ);
-				perror(fn);
 			}
 			path_t = strtok(NULL, ":");
 		}
+		perror(fn);
 	}
 	else
 	{
