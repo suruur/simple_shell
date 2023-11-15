@@ -15,6 +15,8 @@
  */
 void execute_command(char *args[], char *fn)
 {
+	char *path_env, *path_c, *path_t;
+	char cmd_path[1024];
 	pid_t pid;
 
 	pid = fork();
@@ -22,8 +24,20 @@ void execute_command(char *args[], char *fn)
 	if (pid == 0)
 	{
 		/* Child process */
-		execve(args[0], args, environ);
-		perror(fn);
+		path_env = getenv("PATH");
+		path_c = strdup(path_env);
+		path_t = strtok(path_c, ":");
+
+		while (path_t != NULL)
+		{
+			snprintf(cmd_path, sizeof(cmd_path), "%s/%s", path_t, args[0]);
+			if (access(cmd_path, X_OK) == 0)
+			{
+				execve(cmd_path, args, environ);
+				perror(fn);
+			}
+			path_t = strtok(NULL, ":");
+		}
 	}
 	else
 	{
