@@ -94,7 +94,7 @@ void parse_input(char *input, char *fn)
 		if (strcmp(args[0], "exit") == 0)
 		{
 			/* printf("Exiting..\n"); */
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
 		else
 		{
