@@ -10,6 +10,8 @@ void print_env(void);
 
 void exit_shell(char **args);
 
+void change_dir(char *p, char *fn);
+
 void parse_input(char *input, char *fn);
 
 #endif
